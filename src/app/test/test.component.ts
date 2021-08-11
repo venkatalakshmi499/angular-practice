@@ -3,76 +3,43 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-test',
   template: `
-  <h2>
-    Welcome {{name}}
+  <h2 *ngIf="dName; else elseBlock">
+    Welcome
   </h2>
-<input [id]="myId" type="text" value="venky">
-<input [disabled]="isDisabled" id="{{myId}}" type="text" value="venky">
-<input bind-disabled="isDisabled" id="{{myId}}" type="text" value="venky">
-<h2 class="text-special">Angular</h2>
-<h2 [class]="successClass">Angular</h2>
-<h2 [class.text-danger]="hasError">class binding</h2>
-<h2 [ngClass]="messageClasses">Angular</h2>
-<h2 [style.color]="'purple'">Style Binding</h2>
-<h2 [style.color]="hasError ? 'red' :'green' ">Style Binding</h2>
-<h2 [style.color]="highlightColor">Style Binding</h2>
-<h2 [ngStyle]="titleStyles">style Binding</h2>
-<button (click)="onClick($event)">Greet</button>
-<input  #myInput type="text">     
-<button (click)="logMessage(myInput.value)">Log</button>
-
-{{greeting}}
-  <!-- <h2>{{2+2}}</h2> 
-  <h2>{{"Welcome "+ name}}</h2>
-  <h2>{{name.length}}</h2>
-  <h2>{{name.toUpperCase()}}</h2>
-  <h2>{{greetUser()}}</h2>
-  <h2>{{siteUrl}}</h2> -->
-
+  <ng-template #elseBlock>
+  <h2>
+    Name is hidden
+  </h2>
+  </ng-template>
+  <div *ngFor="let color of colors;index as i">
+  <h2> {{i}} {{color}}</h2>    
+</div>
+   <div *ngIf="dName; then thenBlock; else elseBlock"></div>
+ <ng-template #thenBlock>
+<h2>This is then block</h2>
+ </ng-template>
+<ng-template #elseBlock>
+<h2>This is else block</h2>
+</ng-template>
+<div [ngSwitch]="color">
+  <div *ngSwitchCase="'red'">You picked red color</div>
+  <div *ngSwitchCase="'blue'">You picked blue color</div>
+  <div *ngSwitchCase="'green'">You picked green color</div>
+<div *ngSwitchDefault>Pick again</div>
+  </div>
   `,
   styles: [`
-  .text-success{
-    color:green;
-  }
-  .text-danger{
-    color:red;
-  }
-  .text-special{
-    font-style:italic;
-  }
+  
   `]
 })
 export class TestComponent implements OnInit {
-public name1="";
- public name="Andreu";
- public myId="testId";
- public isDisabled=true;
- public successClass="text-success";
- public hasError=true;
- public isSpecial=true;
- public highlightColor="blue";
- public greeting="";
- public messageClasses={
-   "text-success":!this.hasError,
-   "text-danger":this.hasError,
-   "text-special":this.isSpecial
- }
- public titleStyles={
-   color:"yellow",
-   fontStyle:"italic"
- }
+public colors=["red","green","yellow"];
+public dName=false;
+public color="red";
+
   constructor() { }
 
   ngOnInit(): void {
   }
-  greetUser(){
-    return "Hello " +this.name;
-  }
-  onClick(event: any){
-    console.log(event);
-    this.greeting=event.type;
-  }
-  logMessage(value: any){
-    console.log(value);
-  }
+  
 }
